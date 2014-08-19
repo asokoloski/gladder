@@ -31,43 +31,11 @@ func resources_templates_index_html() ([]byte, error) {
 	)
 }
 
-// resources_templates_create_user_html_ reads file data from disk. It returns an error on failure.
-func resources_templates_create_user_html_() ([]byte, error) {
-	return bindata_read(
-		"/home/aaron/stuff/go/src/gladder/resources/templates/create_user.html~",
-		"resources/templates/create_user.html~",
-	)
-}
-
-// resources_templates_index_html_ reads file data from disk. It returns an error on failure.
-func resources_templates_index_html_() ([]byte, error) {
-	return bindata_read(
-		"/home/aaron/stuff/go/src/gladder/resources/templates/index.html~",
-		"resources/templates/index.html~",
-	)
-}
-
 // resources_css_site_css reads file data from disk. It returns an error on failure.
 func resources_css_site_css() ([]byte, error) {
 	return bindata_read(
 		"/home/aaron/stuff/go/src/gladder/resources/css/site.css",
 		"resources/css/site.css",
-	)
-}
-
-// resources_css_site_css_ reads file data from disk. It returns an error on failure.
-func resources_css_site_css_() ([]byte, error) {
-	return bindata_read(
-		"/home/aaron/stuff/go/src/gladder/resources/css/site.css~",
-		"resources/css/site.css~",
-	)
-}
-
-// resources_js_gladder_js_ reads file data from disk. It returns an error on failure.
-func resources_js_gladder_js_() ([]byte, error) {
-	return bindata_read(
-		"/home/aaron/stuff/go/src/gladder/resources/js/gladder.js~",
-		"resources/js/gladder.js~",
 	)
 }
 
@@ -117,18 +85,13 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() ([]byte, error){
-	"resources/templates/create_user.html":  resources_templates_create_user_html,
-	"resources/templates/index.html":        resources_templates_index_html,
-	"resources/templates/create_user.html~": resources_templates_create_user_html_,
-	"resources/templates/index.html~":       resources_templates_index_html_,
-	"resources/css/site.css":                resources_css_site_css,
-	"resources/css/site.css~":               resources_css_site_css_,
-	"resources/js/gladder.js~":              resources_js_gladder_js_,
-	"resources/js/gladder.js":               resources_js_gladder_js,
-	"resources/js/jquery-2.1.1.min.js":      resources_js_jquery_2_1_1_min_js,
-	"resources/js/mustache.js":              resources_js_mustache_js,
+	"resources/templates/create_user.html": resources_templates_create_user_html,
+	"resources/templates/index.html": resources_templates_index_html,
+	"resources/css/site.css": resources_css_site_css,
+	"resources/js/gladder.js": resources_js_gladder_js,
+	"resources/js/jquery-2.1.1.min.js": resources_js_jquery_2_1_1_min_js,
+	"resources/js/mustache.js": resources_js_mustache_js,
 }
-
 // AssetDir returns the file names below a certain
 // directory embedded in the file by go-bindata.
 // For example if you run go-bindata on data/... and data contains the
@@ -165,27 +128,28 @@ func AssetDir(name string) ([]string, error) {
 }
 
 type _bintree_t struct {
-	Func     func() ([]byte, error)
+	Func func() ([]byte, error)
 	Children map[string]*_bintree_t
 }
-
 var _bintree = &_bintree_t{nil, map[string]*_bintree_t{
 	"resources": &_bintree_t{nil, map[string]*_bintree_t{
 		"templates": &_bintree_t{nil, map[string]*_bintree_t{
-			"create_user.html":  &_bintree_t{resources_templates_create_user_html, map[string]*_bintree_t{}},
-			"index.html":        &_bintree_t{resources_templates_index_html, map[string]*_bintree_t{}},
-			"create_user.html~": &_bintree_t{resources_templates_create_user_html_, map[string]*_bintree_t{}},
-			"index.html~":       &_bintree_t{resources_templates_index_html_, map[string]*_bintree_t{}},
+			"create_user.html": &_bintree_t{resources_templates_create_user_html, map[string]*_bintree_t{
+			}},
+			"index.html": &_bintree_t{resources_templates_index_html, map[string]*_bintree_t{
+			}},
 		}},
 		"css": &_bintree_t{nil, map[string]*_bintree_t{
-			"site.css":  &_bintree_t{resources_css_site_css, map[string]*_bintree_t{}},
-			"site.css~": &_bintree_t{resources_css_site_css_, map[string]*_bintree_t{}},
+			"site.css": &_bintree_t{resources_css_site_css, map[string]*_bintree_t{
+			}},
 		}},
 		"js": &_bintree_t{nil, map[string]*_bintree_t{
-			"gladder.js~":         &_bintree_t{resources_js_gladder_js_, map[string]*_bintree_t{}},
-			"gladder.js":          &_bintree_t{resources_js_gladder_js, map[string]*_bintree_t{}},
-			"jquery-2.1.1.min.js": &_bintree_t{resources_js_jquery_2_1_1_min_js, map[string]*_bintree_t{}},
-			"mustache.js":         &_bintree_t{resources_js_mustache_js, map[string]*_bintree_t{}},
+			"gladder.js": &_bintree_t{resources_js_gladder_js, map[string]*_bintree_t{
+			}},
+			"jquery-2.1.1.min.js": &_bintree_t{resources_js_jquery_2_1_1_min_js, map[string]*_bintree_t{
+			}},
+			"mustache.js": &_bintree_t{resources_js_mustache_js, map[string]*_bintree_t{
+			}},
 		}},
 	}},
 }}
