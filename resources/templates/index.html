@@ -1,0 +1,30 @@
+<!doctype HTML>
+<html>
+  <head>
+	<link rel="stylesheet" type="text/css" href="/resources/css/site.css"></link>
+	<script src="/resources/js/jquery-2.1.1.min.js"></script>
+	<script src="/resources/js/mustache.js"></script>
+	<script src="/resources/js/gladder.js"></script>
+    <title>Gladder</title>
+  </head>
+  <body>
+	<a class="create_player" href="/create_player">Create player</a>
+	<div class="ladder">
+	  <table class="ladder">
+		{{ range $.Users }}
+		<tr data-rank="{{ .Rank }}" data-name="{{ .Name }}">
+		  <td class="name">{{ .Name }}</td>
+		  <td class="rank">{{ .Rank }}</td>
+		</tr>
+		{{ end }}
+	  </table>
+	</div>
+	<div id="info">
+	  <div class="help">
+		Choose two players to see their relative handicap.
+	  </div>
+	  <div class="handicap" style="display: none">
+	  </div>
+	</div>
+  </body>
+</html>
