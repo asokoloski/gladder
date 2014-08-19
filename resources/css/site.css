@@ -6,18 +6,23 @@ table.ladder {
 	border-spacing: 0;
 }
 table.ladder tr {
-	color: #a35200;
 	cursor: pointer;
 }
 
 table.ladder td {
+	color: #a35200;
 	margin: 0;
 	border: 0;
 	border-collapse: collapse;
 	padding: 0.25em 0.5em;
 }
 
+table.ladder td.rank {
+	color: #226633;
+}
+
 table.ladder tr.selected {
+	background: #fab460;
 	color: #3d1f00;
 	font-weight: bold;
 }
