@@ -212,6 +212,4 @@ $(function () {
 	});
 
 	$(".handicap").on('click', '.reset', function () { reset_selection(); });
-	$('table.ladder tr:eq(-2) td:eq(0)').eq(0).click();
-	$('table.ladder tr:eq(-1) td:eq(0)').eq(0).click();
 });
