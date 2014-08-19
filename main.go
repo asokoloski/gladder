@@ -15,8 +15,11 @@ import (
 )
 
 func main() {
-	db := flag.String("dbfile", "gladder-db.gkv", "database file for gladder")
+	db := flag.String("dbfile", os.Getenv("GLADDER_DB"), "path to use for gladder database (defaults to value of $GLADDER_DB)")
 	httpAddr := flag.String("http", os.Getenv("GLADDER_HTTP_ADDR"), "http port (':80' for example. defaults to value of $GLADDER_HTTP_ADDR)")
+	if *db == "" {
+		*db = "gladder-db.gkv"
+	}
 	flag.Parse()
 	dbFile, err := os.OpenFile(*db, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0x700)
 	if err != nil {
