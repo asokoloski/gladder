@@ -16,6 +16,7 @@ import (
 
 func main() {
 	db := flag.String("dbfile", "gladder-db.gkv", "database file for gladder")
+	httpAddr := flag.String("http", os.Getenv("GLADDER_HTTP_ADDR"), "http port (':80' for example. defaults to value of $GLADDER_HTTP_ADDR)")
 	flag.Parse()
 	dbFile, err := os.OpenFile(*db, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0x700)
 	if err != nil {
@@ -27,17 +28,16 @@ func main() {
 	}
 
 	gladder := NewGladder(store)
-	aaron, err := gladder.GetUser("aaron")
-	fmt.Println(aaron, err)
-
 	gw := &GladderWeb{gladder}
 
 	log.Println("Starting up")
+	log.Println("Listening on", *httpAddr)
+	log.Println("Using database file", *db)
 	log.Println("Assets:")
 	for _, name := range AssetNames() {
 		log.Println("  ", name)
 	}
-	log.Fatal(http.ListenAndServe(":8080", gw.Mux()))
+	log.Fatal(http.ListenAndServe(*httpAddr, gw.Mux()))
 }
 
 type GladderWeb struct {
