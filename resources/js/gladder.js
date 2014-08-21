@@ -66,40 +66,40 @@ function show_handicap(user_x, user_y, el) {
 
 	var calc_handicap = function (bs, rdiff) {
 		var calc = function (rdiff, opts) {
-			var stones = opts.stones(rdiff);
-			var points_per_stone = opts.base_komi * 2;
-			var k = opts.base_komi - Math.round(rdiff * opts.points_per_rdiff - 0.499);
+			var passes = rdiff / opts.rdiff_per_stone;
+			var complete_passes = Math.floor(passes + 0.001);
+			var stones = complete_passes + 1;
+			if (complete_passes == 0) {
+				stones = 0;
+			}
 			if (stones > opts.stone_cap) {
 				stones = opts.stone_cap; // handle rest with komi
 			}
-			var stone_points = stones * points_per_stone;
-			// komi is points given to white
-			var komi = (k + stone_points);
-//			console.log(opts);
-//			console.log(rdiff, k, stones, points_per_stone, stones, stone_points, komi);
+			var komi_passes = passes - complete_passes;
+			var raw_komi = opts.base_komi * (1 - 2*komi_passes);
+			var komi = Math.floor(raw_komi) + 0.5;
+			console.log(opts);
+			console.log({rdiff:rdiff, passes:passes, complete_passes:complete_passes, stones:stones, komi_passes:komi_passes, raw_komi: raw_komi, komi:komi});
 			return {komi: komi, stones: stones};
 		}
 		var opts;
 		if (bs === '9x9') {
 			opts = {
-				points_per_rdiff: 6,
 				base_komi: 7.5,
 				stone_cap: 6,
-				stones: function (rdiff) { return Math.floor(rdiff / 2 + 0.01); }
+				rdiff_per_stone: 4.0,
 			};
 		} else if (bs === '13x13') {
 			opts = {
-				points_per_rdiff: 9,
 				base_komi: 6.5,
 				stone_cap: 9,
-				stones: function (rdiff) { return Math.floor(rdiff / 2 + 0.01); }
+				rdiff_per_stone: 2.0,
 			};
 		} else if (bs === '19x19') {
 			opts = {
-				points_per_rdiff: 13,
 				base_komi: 6.5,
 				stone_cap: 12,
-				stones: function (rdiff) { return Math.floor(rdiff + 0.01); }
+				rdiff_per_stone: 1.0,
 			};
 		}
 		return calc(rdiff, opts);
