@@ -67,12 +67,13 @@ function show_handicap(user_x, user_y, el) {
 	var calc_handicap = function (bs, rdiff) {
 		var calc = function (rdiff, opts) {
 			var stones = opts.stones(rdiff);
+			var points_per_stone = opts.base_komi * 2;
 			var k = opts.base_komi - Math.round(rdiff * opts.points_per_rdiff - 0.499);
 			if (stones > opts.stone_cap) {
 				stones = opts.stone_cap; // handle rest with komi
 			}
-			var points_per_stone = opts.points_per_rdiff / opts.stones_per_rdiff;
 			var stone_points = stones * points_per_stone;
+			// komi is points given to white
 			var komi = (k + stone_points);
 //			console.log(opts);
 //			console.log(rdiff, k, stones, points_per_stone, stones, stone_points, komi);
@@ -82,7 +83,6 @@ function show_handicap(user_x, user_y, el) {
 		if (bs === '9x9') {
 			opts = {
 				points_per_rdiff: 6,
-				stones_per_rdiff: 0.25,
 				base_komi: 7.5,
 				stone_cap: 6,
 				stones: function (rdiff) { return Math.floor(rdiff / 2 + 0.01); }
@@ -90,7 +90,6 @@ function show_handicap(user_x, user_y, el) {
 		} else if (bs === '13x13') {
 			opts = {
 				points_per_rdiff: 9,
-				stones_per_rdiff: 0.5,
 				base_komi: 6.5,
 				stone_cap: 9,
 				stones: function (rdiff) { return Math.floor(rdiff / 2 + 0.01); }
@@ -98,7 +97,6 @@ function show_handicap(user_x, user_y, el) {
 		} else if (bs === '19x19') {
 			opts = {
 				points_per_rdiff: 13,
-				stones_per_rdiff: 1,
 				base_komi: 6.5,
 				stone_cap: 12,
 				stones: function (rdiff) { return Math.floor(rdiff + 0.01); }
