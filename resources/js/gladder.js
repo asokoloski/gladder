@@ -72,9 +72,6 @@ function show_handicap(user_x, user_y, el) {
 			if (complete_passes == 0) {
 				stones = 0;
 			}
-			if (stones > opts.stone_cap) {
-				stones = opts.stone_cap; // handle rest with komi
-			}
 			var komi_passes = passes - complete_passes;
 			var raw_komi = opts.base_komi * (1 - 2*komi_passes);
 			var komi = Math.floor(raw_komi) + 0.5;
@@ -86,19 +83,16 @@ function show_handicap(user_x, user_y, el) {
 		if (bs === '9x9') {
 			opts = {
 				base_komi: 7.5,
-				stone_cap: 6,
 				rdiff_per_stone: 6.0,
 			};
 		} else if (bs === '13x13') {
 			opts = {
 				base_komi: 6.5,
-				stone_cap: 9,
 				rdiff_per_stone: 3.0,
 			};
 		} else if (bs === '19x19') {
 			opts = {
 				base_komi: 6.5,
-				stone_cap: 12,
 				rdiff_per_stone: 1.0,
 			};
 		}
@@ -106,7 +100,7 @@ function show_handicap(user_x, user_y, el) {
 	};
 	var per_board = [];
 	var rank_diff = Ranker.numeric_from_ladder(user2.rank) - Ranker.numeric_from_ladder(user1.rank);
-	var board_config = [{ size: '9x9' }, {size: '13x13' }, {size: '19x19' }];
+	var board_config = [{ size: '8x9' }, {size: '13x13' }, {size: '19x19' }];
 	$.each(board_config, function () {
 		var bc = this;
 
