@@ -87,13 +87,13 @@ function show_handicap(user_x, user_y, el) {
 			opts = {
 				base_komi: 7.5,
 				stone_cap: 6,
-				rdiff_per_stone: 4.0,
+				rdiff_per_stone: 6.0,
 			};
 		} else if (bs === '13x13') {
 			opts = {
 				base_komi: 6.5,
 				stone_cap: 9,
-				rdiff_per_stone: 2.0,
+				rdiff_per_stone: 3.0,
 			};
 		} else if (bs === '19x19') {
 			opts = {
