@@ -5,5 +5,5 @@ ADD gladder /usr/bin/gladder
 ENV GLADDER_HTTP_ADDR :80
 EXPOSE 80
 ENV GLADDER_DB /data/gladder-db.gkv
-VOLUME "/data"
+VOLUME /data
 ENTRYPOINT ["/usr/bin/gladder"]
