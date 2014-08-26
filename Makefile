@@ -1,5 +1,5 @@
 
-gladder: *.go
+gladder: *.go bindata.go
 	go install
 	go build # so we have an executable for docker
 
