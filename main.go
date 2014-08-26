@@ -86,8 +86,18 @@ func (gw *GladderWeb) editPlayer(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	user.Rank = Rank(rank)
-	fmt.Println("Setting rank of", uname, "to", rank)
+	oldRankStr := r.Form.Get("oldRank")
+	oldRank, err := strconv.Atoi(oldRankStr)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if user.Rank == Rank(oldRank) {
+		user.Rank = Rank(rank)
+		fmt.Println("Setting rank of", uname, "to", rank)
+	} else {
+	        fmt.Println("Not setting rank of", uname, "to", rank, "because it already changed from", oldRank, "to", user.Rank)
+	}
 	gw.Gladder.SaveUser(user)
 	http.Redirect(w, r, "/", 302)
 }

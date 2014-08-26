@@ -100,7 +100,7 @@ function show_handicap(user_x, user_y, el) {
 	};
 	var per_board = [];
 	var rank_diff = Ranker.numeric_from_ladder(user2.rank) - Ranker.numeric_from_ladder(user1.rank);
-	var board_config = [{ size: '8x9' }, {size: '13x13' }, {size: '19x19' }];
+	var board_config = [{ size: '9x9' }, {size: '13x13' }, {size: '19x19' }];
 	$.each(board_config, function () {
 		var bc = this;
 
@@ -194,7 +194,7 @@ $(function () {
 		$.ajax({
 			url: url,
 			type: 'POST',
-			data: { rank: new_lrank },
+			data: { rank: new_lrank, oldRank: lrank },
 			success: function () {
 				document.location.reload(true);
 			},
