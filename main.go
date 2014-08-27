@@ -12,9 +12,13 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"time"
 )
 
+var ServerStarted time.Time
+
 func main() {
+	ServerStarted = time.Now().UTC()
 	db := flag.String("dbfile", os.Getenv("GLADDER_DB"), "path to use for gladder database (defaults to value of $GLADDER_DB)")
 	httpAddr := flag.String("http", os.Getenv("GLADDER_HTTP_ADDR"), "http port (':80' for example. defaults to value of $GLADDER_HTTP_ADDR)")
 	if *db == "" {
@@ -96,7 +100,7 @@ func (gw *GladderWeb) editPlayer(w http.ResponseWriter, r *http.Request) {
 		user.Rank = Rank(rank)
 		fmt.Println("Setting rank of", uname, "to", rank)
 	} else {
-	        fmt.Println("Not setting rank of", uname, "to", rank, "because it already changed from", oldRank, "to", user.Rank)
+		fmt.Println("Not setting rank of", uname, "to", rank, "because it already changed from", oldRank, "to", user.Rank)
 	}
 	gw.Gladder.SaveUser(user)
 	http.Redirect(w, r, "/", 302)
@@ -136,6 +140,10 @@ func (gw *GladderWeb) createPlayer(w http.ResponseWriter, r *http.Request) {
 	render(w, "resources/templates/create_user.html", map[string]interface{}{})
 }
 
+func Cachebuster() string {
+	return strconv.FormatInt(ServerStarted.UnixNano(), 10)
+}
+
 func render(w http.ResponseWriter, templateFile string, context interface{}) {
 	var err error
 	var tmpl *template.Template
@@ -143,10 +151,15 @@ func render(w http.ResponseWriter, templateFile string, context interface{}) {
 	if err != nil {
 		goto ERR
 	}
-	tmpl, err = template.New(templateFile).Parse(string(file))
+	tmpl = template.New(templateFile)
+	tmpl.Funcs(map[string]interface{}{
+		"Cachebuster": Cachebuster,
+	})
+	tmpl, err = tmpl.Parse(string(file))
 	if err != nil {
 		goto ERR
 	}
+
 	err = tmpl.Execute(w, context)
 	if err != nil {
 		goto ERR
