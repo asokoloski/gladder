@@ -55,13 +55,13 @@ Ranker = (function () {
 
 function show_handicap(user_x, user_y, el) {
 	// 1 is higher, and therefore white
-	var user1, user2;
+	var white, black;
 	if (user_x.rank < user_y.rank) {
-		user1 = user_x;
-		user2 = user_y;
+		white = user_x;
+		black = user_y;
 	} else {
-		user1 = user_y;
-		user2 = user_x;
+		white = user_y;
+		black = user_x;
 	}
 
 	var calc_handicap = function (bs, rdiff) {
@@ -99,7 +99,7 @@ function show_handicap(user_x, user_y, el) {
 		return calc(rdiff, opts);
 	};
 	var per_board = [];
-	var rank_diff = Ranker.numeric_from_ladder(user2.rank) - Ranker.numeric_from_ladder(user1.rank);
+	var rank_diff = Ranker.numeric_from_ladder(black.rank) - Ranker.numeric_from_ladder(white.rank);
 	var board_config = [{ size: '9x9' }, {size: '13x13' }, {size: '19x19' }];
 	$.each(board_config, function () {
 		var bc = this;
@@ -108,9 +108,7 @@ function show_handicap(user_x, user_y, el) {
 		var handicap = {
 			board_size: bc.size,
 			stones_to_black: hcap.stones,
-			white: user1,
 			white_komi: hcap.komi > 0 ? hcap.komi : 0,
-			black: user2,
 			black_komi: hcap.komi < 0 ? -hcap.komi: 0
 		};
 		per_board.push(handicap);
@@ -136,10 +134,14 @@ function show_handicap(user_x, user_y, el) {
 				return 'and gets ' + this.white_komi.toFixed(1) + " points";
 			}
 			return '';
-		}
+		},
+		black: black,
+		white: white,
 	}
 
 	var html = Mustache.render('<button class="reset">reset</button>' +
+							   '<button class="black_win">{{black.name}} wins</button></td>' + 
+							   '<button class="white_win">{{white.name}} wins</button></td>' + 
 							   '<table class="handicap">{{#per_board}}<tr><td>On {{board_size}}</td>' +
 							   '<td>' +
 							   '<span class="black_player"><span class="plays">{{black.name}} plays black</span> {{black_gets}}</span><br>' +
@@ -148,6 +150,27 @@ function show_handicap(user_x, user_y, el) {
 							   '</tr>{{/per_board}}</table>' +
 							   '', dat);
 	el.html(html);
+	var player_beat_player = function(winner, loser) {
+		postNewRank(winner.name, winner.rank, winner.rank - 1);
+		postNewRank(loser.name, loser.rank, loser.rank + 1);
+	}
+	$(".handicap").on('click', '.black_win', function() { player_beat_player(black, white); });
+	$(".handicap").on('click', '.white_win', function() { player_beat_player(white, black); });	
+	return {white: white, black: black}
+}
+
+function postNewRank(name, oldRank, newRank) {
+	var url = '/player/' + name + '/';
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: { rank: newRank, oldRank: oldRank },
+		success: function () {
+			document.location.reload(true);
+		},
+		error: function (xhr, status) {
+		}
+	});
 }
 
 $(function () {
@@ -190,17 +213,7 @@ $(function () {
 			return;
 		}
 		var new_lrank = Ranker.ladder_from_display(new_rank);
-		var url = '/player/' + tr.data('name') + '/';
-		$.ajax({
-			url: url,
-			type: 'POST',
-			data: { rank: new_lrank, oldRank: lrank },
-			success: function () {
-				document.location.reload(true);
-			},
-			error: function (xhr, status) {
-			}
-		});
+		postNewRank(tr.data('name'), lrank, new_lrank);
 	});
 
 	$(".handicap").on('click', '.reset', function () { reset_selection(); });
